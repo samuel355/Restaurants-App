@@ -1,31 +1,50 @@
-import React from 'react';
-import {View, Text, SafeAreaView, Image, TextInput, ScrollView} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import {View, Text, SafeAreaView, Image, TextInput, ScrollView, StyleSheet} from 'react-native';
 import {
   ChevronDownIcon,
   UserIcon,
   MagnifyingGlassIcon,
   AdjustmentsVerticalIcon,
-  SearchIcon,
-  AdjustmentsIcon,
 } from 'react-native-heroicons/outline';
+
 import Categories from '../components/Categories';
 import FeaturedRow from '../components/FeaturedRow';
 
+import client from '../sanity'
+
 const HomeScreen = () => {
+  const [featuredCategories, setFeaturedCategories] = useState([])
+
+  useEffect(() => {
+    client.fetch(`
+    *[_type == "featured"]{
+      ...,
+      restaurants[]->{
+        ...,
+        dishes[]->{
+          ...,
+        }
+      }
+    }
+    `).then(data => {
+      setFeaturedCategories(data)
+    })
+  }, [])
+
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{marginBottom: 120}}>
       {/* Header */}
-      <View className="bg-white pt-5">
-        <View className="flex-row pb-3 items-center mx-4 space-x-2">
+      <View style={styles.main}>
+        <View style={styles.container}>
           <Image
-            className="w-7 h-7 bg-gray-300 p-4 rounded-full"
+            style={styles.image}
             source={{uri: 'https://links.papareact.com/wru'}}
           />
-          <View className="flex-1">
-            <Text className="font-bold text-gray-400 text-xs">Deliver Now</Text>
-            <Text className="font-bold text-xl">
-              Current Location.
-              <ChevronDownIcon size={20} color="#00ccbb" />
+          <View style={styles.subContainer}>
+            <Text style={styles.deliverTitle}>Deliver Now</Text>
+            <Text style={styles.cLocation}>
+              Current Location
+              <ChevronDownIcon  size={22} color="#00ccbb" />
             </Text>
           </View>
           <UserIcon size={35} color="#00ccbb" />
@@ -33,8 +52,8 @@ const HomeScreen = () => {
 
         {/* Search Box */}
 
-        <View className="flex-row items-center space-x-2 pb-2 mx-4">
-          <View className="flex-row flex-1 space-x-2 bg-gray-200 p-3 rounded-3xl">
+        <View style={styles.searchBoxContainer}>
+          <View style={styles.searchBox}>
             <MagnifyingGlassIcon color="#00ccbb" />
             <TextInput placeholder='Restaurants and Cuisines' keyboardType='default' />
           </View>
@@ -47,26 +66,68 @@ const HomeScreen = () => {
         <Categories />
 
         {/* Featured Rows */}
-        <FeaturedRow 
-          id="1"
-          title="Featured"
-          description = "Paid bla bla"
-        />
-
-        <FeaturedRow 
-          id="2"
-          title="Featured"
-          description = "Paid bla bla"
-        />
-
-        <FeaturedRow 
-          id="3"
-          title="Featured"
-          description = "Paid bla bla"
-        />
+        {
+          featuredCategories?.map((category) => (
+            <FeaturedRow 
+              key={category.id}
+              id={category._id}
+              title={category.name}
+              description = {category.short_description}
+            />
+          ))
+        }
       </ScrollView>
     </SafeAreaView>
   );
 };
 
+const styles= StyleSheet.create({
+  main: {
+    backgroundColor: 'white',
+    paddingTop: 10
+  },
+  container: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginHorizontal: 10,
+    paddingBottom: 10
+  },
+  image: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: 'grey'
+  },
+  subContainer: {
+    flex: 1,
+    marginLeft: 8
+  },
+  deliverTitle: {
+    color: 'grey',
+    fontWeight: 'bold',
+    fontSize: 12
+  },
+  cLocation: {
+    fontWeight: '700',
+    fontSize: 20
+  },
+  caretDownIcon : {
+    marginTop: 5
+  },
+  searchBoxContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginHorizontal: 10,
+    paddingVertical: 10
+  },
+  searchBox: {
+    flex: 1,
+    backgroundColor: 'grey',
+    flexDirection: 'row',
+    padding: 8,
+    borderRadius: 20
+  }
+
+})
 export default HomeScreen;

@@ -1,19 +1,35 @@
-import { View, Text, ScrollView } from 'react-native'
-import React from 'react'
+import { View, Text, ScrollView, StyleSheet } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import { ArrowRightIcon } from 'react-native-heroicons/outline'
 import RestaurantCard from './RestaurantCard'
+import client from '../sanity'
 
 const FeaturedRow = ({id, title, description}) => {
+  const [restaurants, setRestaurants] = useState()
+
+  useEffect(() => {
+    client.fetch(`
+    *[_type == "featured" && _id == $id]{
+      ...,
+      restaurants[]->{
+        ...,
+        dishes[]->,
+         type->{name}
+      }
+    }[0]
+    `,{id}).then((data) => setRestaurants(data?.restaurants))
+  }, [])
+  console.log(restaurants)
   return (
     <View>
-      <View className="mt-4 flex-row items-center justify-between px-4">
-        <Text className="font-bold text-lg">{title}</Text>
+      <View style={styles.container}>
+        <Text style={styles.title}>{title}</Text>
         <ArrowRightIcon color={"#00ccbb"} />
       </View>
-      <Text className="text-xs text-gray-500 px-4">{description}</Text>
+      <Text style={styles.desc}>{description}</Text>
 
       <ScrollView
-        className="pt-4"
+        style={styles.scrollView}
         horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{
@@ -21,61 +37,49 @@ const FeaturedRow = ({id, title, description}) => {
         }}
       >
       {/* Restaurant Card */}
-      <RestaurantCard 
-        id={123}
-        imgUrl="https://links.papareact.com/gn7"
-        title="Yo Sush"
-        rating = {4.5}
-        genre="Japanese"
-        address = "123 main st"
-        short_description={"this is a short description"}
-        dishes= {[]}
-        long={""}
-        lat={""}
-      /> 
 
-      <RestaurantCard 
-        id={123}
-        imgUrl="https://links.papareact.com/gn7"
-        title="Yo Sush"
-        rating = {4.5}
-        genre="Japanese"
-        address = "123 main st"
-        short_description={"this is a short description"}
-        dishes= {[]}
-        long={""}
-        lat={""}
-      /> 
-
-      <RestaurantCard 
-        id={123}
-        imgUrl="https://links.papareact.com/gn7"
-        title="Yo Sush"
-        rating = {4.5}
-        genre="Japanese"
-        address = "123 main st"
-        short_description={"this is a short description"}
-        dishes= {[]}
-        long={""}
-        lat={""}
-      /> 
-
-      <RestaurantCard 
-        id={123}
-        imgUrl="https://links.papareact.com/gn7"
-        title="Yo Sush"
-        rating = {4.5}
-        genre="Japanese"
-        address = "123 main st"
-        short_description={"this is a short description"}
-        dishes= {[]}
-        long={""}
-        lat={""}
-      /> 
+      {
+        restaurants?.map((restaurant) => (
+          <RestaurantCard 
+            key={restaurant._id}
+            id={restaurant._id}
+            imgUrl={restaurant.image}
+            title={restaurant.name}
+            rating = {restaurant.rating}
+            genre={restaurant.type?.name}
+            address = {restaurant.address}
+            short_description={restaurant.short_description}
+            dishes= {restaurant.dishes}
+            long={restaurant.long}
+            lat={restaurant.lat}
+          /> 
+        ))
+      }
 
       </ScrollView>
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    marginTop: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 10,
+  },
+  title: {
+    fontWeight: '600',
+    fontSize: 18
+  },
+  desc: {
+    color: 'grey',
+    paddingHorizontal: 10,
+  },
+  scrollView: {
+    paddingTop: 10
+  }
+})
 
 export default FeaturedRow 
