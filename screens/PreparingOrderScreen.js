@@ -22,7 +22,7 @@ const PlaceOrder = () => {
         animation="slideInUp"
         iterationCount ={1}
       />
-      <Animatable.Text animation="slideInLeft" iterationCount ={5} style={styles.title} >
+      <Animatable.Text animation="slideInLeft" iterationCount ={2} style={styles.title} >
         Waiting For Restaurant to Accept Your Order!
       </Animatable.Text>
 
