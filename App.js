@@ -24,7 +24,7 @@ const App = () => {
           <Stack.Navigator screenOptions={{headerShown: false}}>
             <Stack.Screen name="Home" component={HomeScreen} />
             <Stack.Screen name="Restaurant" component={RestaurantScreen} />
-            <Stack.Screen name="Cart" component={CartScreen} />
+            <Stack.Screen options={{presentation: 'modal'}} name="Cart" component={CartScreen} />
           </Stack.Navigator>
         </TailwindProvider>
       </NavigationContainer>
