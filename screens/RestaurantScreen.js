@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet , Image, TouchableOpacity} from 'react-native'
+import { View, Text, StyleSheet , Image, TouchableOpacity, ScrollView} from 'react-native'
 import React from 'react'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { urlFor } from '../sanity'
@@ -39,7 +39,20 @@ const RestaurantScreen = () => {
             </TouchableOpacity>
 
             <Text style={styles.menu}>Menu</Text>
-            <Dishes dishes={dishes} />
+            <ScrollView style={styles.scrollView} vertical showsVerticalScrollIndicator={false}>
+                {
+                    dishes.map((dish) => (
+                        <Dishes 
+                            key={dish._id}
+                            id={dish._id}
+                            name={dish.name}
+                            description={dish.short_description}
+                            price = {dish.price}
+                            image = {dish.image}
+                        />
+                    ))
+                }
+            </ScrollView>
         </View>
     )
 }
@@ -111,6 +124,12 @@ const styles = StyleSheet.create({
         fontWeight: '700',
         marginVertical: 15,
         marginLeft: 10
+    },
+    scrollView: {
+        marginBottom: 420
+    },
+    dishes: {
+        marginHorizontal: 10
     }
 })
 
