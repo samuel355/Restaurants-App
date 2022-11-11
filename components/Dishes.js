@@ -47,12 +47,14 @@ const Dishes = ({id, name, description, price, image}) => {
                         <View style={styles.inner}>
                             
                             <TouchableOpacity onPress={removeItemFromBasket}>
-                                <MinusCircleIcon color="#00ccbb"  size={40} />
+                                <MinusCircleIcon color={items?.length > 0 ? '#00ccbb' : 'grey' }  size={40} />
                             </TouchableOpacity>
+
                             <Text style={styles.count}>{items.length}</Text>
+
                             <TouchableOpacity onPress={addItemToBasket}>
                                 {/* color={items?.length > 0 ? '#00ccbb' : 'grey' } */}
-                                <PlusCircleIcon  color="#00ccbb" size={40} />
+                                <PlusCircleIcon  color={items?.length > 0 ? '#00ccbb' : 'grey' } size={40} />
                             </TouchableOpacity>
                         </View>
                     </View>
