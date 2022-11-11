@@ -4,6 +4,7 @@ import { useNavigation, useRoute } from '@react-navigation/native'
 import { urlFor } from '../sanity'
 import { ArrowRightIcon, ArrowSmallLeftIcon, MapPinIcon, QuestionMarkCircleIcon, StarIcon } from 'react-native-heroicons/outline'
 import Dishes from '../components/Dishes'
+import BasketIcon from '../components/BasketIcon'
 
 const RestaurantScreen = () => {
     const navigation = useNavigation()
@@ -14,46 +15,49 @@ const RestaurantScreen = () => {
     } = useRoute()
 
     return (
-        <View>
-            <View style={styles.container}>
-                <Image style={styles.image} source={{uri: urlFor(imgUrl).url()}} />
-                <TouchableOpacity style={styles.touchOpc} onPress={ () => navigation.goBack()}>
-                    <ArrowSmallLeftIcon size={20} color="#00ccbb" />
-                </TouchableOpacity>
-            </View>
-            <View style={styles.infoContainer}>
-                <Text style={styles.resName}>{title}</Text>
-                <View style={styles.iconsContainer}>
-                    <StarIcon color="green" opacity={0.5} size={22} />
-                    <Text style={styles.rating}> {rating} • {genre} </Text>
-                    <MapPinIcon color="green" size={22} opacity={0.4} />
-                    <Text style={styles.address}>Near {address} </Text>
+        <>
+            <BasketIcon />
+            <View>
+                <View style={styles.container}>
+                    <Image style={styles.image} source={{uri: urlFor(imgUrl).url()}} />
+                    <TouchableOpacity style={styles.touchOpc} onPress={ () => navigation.goBack()}>
+                        <ArrowSmallLeftIcon size={20} color="#00ccbb" />
+                    </TouchableOpacity>
                 </View>
-                <Text style={styles.desc}>{short_description}</Text>                
-            </View>
-        
-            <TouchableOpacity style={styles.allergyContainer}>
-                <QuestionMarkCircleIcon size={20} color="green" opacity={0.4} />
-                <Text style={styles.allergyTitle}>Have a food allergy</Text>
-                <ArrowRightIcon size={20} color="green" opacity={0.4}  />
-            </TouchableOpacity>
+                <View style={styles.infoContainer}>
+                    <Text style={styles.resName}>{title}</Text>
+                    <View style={styles.iconsContainer}>
+                        <StarIcon color="green" opacity={0.5} size={22} />
+                        <Text style={styles.rating}> {rating} • {genre} </Text>
+                        <MapPinIcon color="green" size={22} opacity={0.4} />
+                        <Text style={styles.address}>Near {address} </Text>
+                    </View>
+                    <Text style={styles.desc}>{short_description}</Text>                
+                </View>
+            
+                <TouchableOpacity style={styles.allergyContainer}>
+                    <QuestionMarkCircleIcon size={20} color="green" opacity={0.4} />
+                    <Text style={styles.allergyTitle}>Have a food allergy</Text>
+                    <ArrowRightIcon size={20} color="green" opacity={0.4}  />
+                </TouchableOpacity>
 
-            <Text style={styles.menu}>Menu</Text>
-            <ScrollView style={styles.scrollView} vertical showsVerticalScrollIndicator={false}>
-                {
-                    dishes.map((dish) => (
-                        <Dishes 
+                <Text style={styles.menu}>Menu</Text>
+                <ScrollView style={styles.scrollView} vertical showsVerticalScrollIndicator={false}>
+                    {
+                        dishes.map((dish) => (
+                            <Dishes 
                             key={dish._id}
-                            id={dish._id}
-                            name={dish.name}
-                            description={dish.short_description}
-                            price = {dish.price}
-                            image = {dish.image}
-                        />
-                    ))
-                }
-            </ScrollView>
-        </View>
+                                id={dish._id}
+                                name={dish.name}
+                                description={dish.short_description}
+                                price = {dish.price}
+                                image = {dish.image}
+                                />
+                                ))
+                    }
+                </ScrollView>
+            </View>
+        </>
     )
 }
 
