@@ -10,19 +10,22 @@ const BasketIcon = () => {
     const items = useSelector(selectBasketItems)
     const total = useSelector(selectBasketTotal)
     const navigation = useNavigation()
-  return (
-    items.length > 0 && (
-        <View style={styles.container}>
-            <TouchableOpacity style={styles.touchOpc} onPress={()=> navigation.navigate('Cart')}>
-                <Text style={styles.length}>{items.length}</Text>
-                <Text style={styles.total}>
-                    <Currency quantity={ total } currency="GBP" />
-                </Text>
-                <Text style={styles.title}>View Cart<ArrowSmallRightIcon size={20} color="white" /> </Text>
-            </TouchableOpacity>
-        </View>
+
+    if (items.length === 0) return null;
+    
+    return (
+        items.length > 0 && (
+            <View style={styles.container}>
+                <TouchableOpacity style={styles.touchOpc} onPress={()=> navigation.navigate('Cart')}>
+                    <Text style={styles.length}>{items.length}</Text>
+                    <Text style={styles.total}>
+                        <Currency quantity={ total } currency="GBP" />
+                    </Text>
+                    <Text style={styles.title}>View Cart<ArrowSmallRightIcon size={20} color="white" /> </Text>
+                </TouchableOpacity>
+            </View>
+        )
     )
-  )
 }
 
 const styles = StyleSheet.create({
