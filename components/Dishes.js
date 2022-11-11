@@ -3,11 +3,27 @@ import React, { useState } from 'react'
 import Currency from 'react-currency-formatter'
 import {urlFor} from '../sanity'
 import { MinusCircleIcon, PlusCircleIcon } from 'react-native-heroicons/outline'
+import {useDispatch, useSelector} from 'react-redux'
+import { addToBasket, removeFromBasket, selectBasketItemsWithId } from '../features/basketSlice'
 
 const Dishes = ({id, name, description, price, image}) => {
     const [isPressed, setIsPressed] = useState(false)
-    const [count, isCount] = useState(0)
 
+    const dispatch = useDispatch()
+    const items = useSelector( (state) => selectBasketItemsWithId(state, id))
+
+    const addItemToBasket = () => {
+        dispatch(addToBasket({id, name, description, price, image}))
+    }
+    const removeItemFromBasket =() => {
+        if(!items.length > 0 ){
+            setIsPressed(false)
+            return;
+        };
+        
+        dispatch(removeFromBasket({id}))
+    }
+    console.log(items)
     return (
         <>
             <View style={styles.container}>
@@ -29,13 +45,14 @@ const Dishes = ({id, name, description, price, image}) => {
                 isPressed && (
                     <View style={styles.countContainer}>
                         <View style={styles.inner}>
-                            <TouchableOpacity>
+                            
+                            <TouchableOpacity onPress={removeItemFromBasket}>
+                                <MinusCircleIcon color="#00ccbb"  size={40} />
+                            </TouchableOpacity>
+                            <Text style={styles.count}>{items.length}</Text>
+                            <TouchableOpacity onPress={addItemToBasket}>
                                 {/* color={items?.length > 0 ? '#00ccbb' : 'grey' } */}
                                 <PlusCircleIcon  color="#00ccbb" size={40} />
-                            </TouchableOpacity>
-                            <Text style={styles.count}>{count}</Text>
-                            <TouchableOpacity>
-                                <MinusCircleIcon color="#00ccbb"  size={40} />
                             </TouchableOpacity>
                         </View>
                     </View>

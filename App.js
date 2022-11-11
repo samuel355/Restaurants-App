@@ -8,20 +8,26 @@ import HomeScreen from './screens/HomeScreen';
 import RestaurantScreen from './screens/RestaurantScreen';
 import { StatusBar } from 'react-native';
 
+import { store } from './store';
+import {Provider } from 'react-redux'
+
 const Stack = createNativeStackNavigator();
 
 const App = () => {
   //const isDarkMode = useColorScheme() === 'dark';
 
   return (
-    <NavigationContainer>
-      <TailwindProvider>
-        <Stack.Navigator screenOptions={{headerShown: false}}>
-          <Stack.Screen name="Home" component={HomeScreen} />
-          <Stack.Screen name="Restaurant" component={RestaurantScreen} />
-        </Stack.Navigator>
-      </TailwindProvider>
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <TailwindProvider>
+          <Stack.Navigator screenOptions={{headerShown: false}}>
+            <Stack.Screen name="Home" component={HomeScreen} />
+            <Stack.Screen name="Restaurant" component={RestaurantScreen} />
+          </Stack.Navigator>
+        </TailwindProvider>
+      </NavigationContainer>
+    </Provider>
+
   );
 };
 
