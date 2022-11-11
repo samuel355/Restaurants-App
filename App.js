@@ -11,6 +11,8 @@ import { StatusBar } from 'react-native';
 import { store } from './store';
 import {Provider } from 'react-redux'
 import CartScreen from './screens/CartScreen';
+import PreparingOrderScreen from './screens/PreparingOrderScreen';
+import DeliveryScreen from './screens/DeliveryScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -25,6 +27,8 @@ const App = () => {
             <Stack.Screen name="Home" component={HomeScreen} />
             <Stack.Screen name="Restaurant" component={RestaurantScreen} />
             <Stack.Screen name="Cart" component={CartScreen} />
+            <Stack.Screen name="PreparingOrderScreen" component={PreparingOrderScreen} />
+            <Stack.Screen name="Delivery" component={DeliveryScreen} />
           </Stack.Navigator>
         </TailwindProvider>
       </NavigationContainer>

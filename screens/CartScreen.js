@@ -1,10 +1,10 @@
 import { View, Text, SafeAreaView, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native'
-import React, {useState, useMemo, useEffect} from 'react'
+import  React, {useState, useEffect} from 'react'
 import { useNavigation } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectRestaurant } from '../features/restaurantSlice';
-import { removeBasket, removeFromBasket, selectBasketItems, selectBasketTotal } from '../features/basketSlice';
-import { LockClosedIcon, XCircleIcon } from 'react-native-heroicons/outline';
+import { removeFromBasket, selectBasketItems, selectBasketTotal } from '../features/basketSlice';
+import { XCircleIcon } from 'react-native-heroicons/outline';
 import { urlFor } from '../sanity';
 import Currency from 'react-currency-formatter'
 
@@ -61,7 +61,7 @@ const CartScreen = () => {
                 <Text> <Currency quantity={items[0]?.price} currency="GBP" /> </Text>
 
                 <TouchableOpacity onPress={() => dispatch(removeFromBasket({id: key}))}>
-                <XCircleIcon color='red' size={20} />
+                  <XCircleIcon color='red' size={20} />
                 </TouchableOpacity>
               </View>
             ))
@@ -85,11 +85,11 @@ const CartScreen = () => {
              <Text style={styles.totalMoney}> <Currency quantity={basketTotal + 5.999} currency="GBP" /> </Text>
           </View>
 
-          <TouchableOpacity style={styles.btn}>
+          <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate('PreparingOrderScreen')}>
             <Text style={styles.btnText}>Place Order</Text>
           </TouchableOpacity>
        </View>
-       
+
     </SafeAreaView>
   )
 }
