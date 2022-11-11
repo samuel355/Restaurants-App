@@ -1,11 +1,11 @@
 import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native'
 import React from 'react'
 
-const CategoryCard = ({imgUrl, title}) => {
+const CategoryCard = ({imgUrl, title, id}) => {
   return (
-    <TouchableOpacity style={styles.container} className="mr-2 relative">
-        <Image style={styles.image} className="w-20 h-20 rounded" source={{uri: imgUrl}} />
-        <Text style={styles.title} className="absolute bottom-1 left-1 text-white font-bold">{title}</Text>
+    <TouchableOpacity style={styles.container}>
+        <Image style={styles.image} source={{uri: imgUrl}} />
+        <Text style={styles.title}>{title}</Text>
     </TouchableOpacity>
   )
 }
@@ -22,10 +22,11 @@ const styles = StyleSheet.create({
   },
   title: {
     position: 'absolute',
-    color: 'white',
+    color: 'black',
     fontWeight : 'bold',
     left: 5,
-    bottom: 5
+    bottom: 0,
+    backgroundColor: 'white'
   }
 })
 
