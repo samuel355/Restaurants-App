@@ -23,7 +23,7 @@ const Dishes = ({id, name, description, price, image}) => {
         
         dispatch(removeFromBasket({id}))
     }
-
+    console.log(items)
     return (
         <>
             <View style={styles.container}>

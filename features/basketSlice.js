@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-
 const initialState = {
   items: [],
 }
@@ -22,7 +21,7 @@ export const basketSlice = createSlice({
             let newBasket = [...state.items]
 
             //if item found then cut it from the basket item[]
-            if(index > 0){
+            if(index >= 0){
                 newBasket.splice(index, 1)
             }else{
                 console.warn(
